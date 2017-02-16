@@ -136,10 +136,9 @@ if [ ${#versions[@]} -eq 0 ]; then
 fi
 versions=( "${versions[@]%/}" )
 
-# see OPENSSL_VERSION in Dockerfile.template
-opensslVersionDebian="$(docker run -i --rm debian:stretch-slim bash -c 'apt-get update -qq && apt-cache show "$@"' -- 'openssl' |tac|tac| awk -F ': ' '$1 == "Version" { print $2; exit }')"
+# see OPENSSL_VERSION in Dockerfile-centos.template
+opensslVersionDebian="$(docker run -i --rm centos:7 bash -c 'yum install -y https://downloads.ulyaoth.net/rpm/ulyaoth-latest.centos.noarch.rpm && yum info "$@"' -- 'ulyaoth-openssl1.0.2' |tac|tac| awk -F ': ' '$1 ~ /^Version/ { print $2; exit }')"
 
-travisEnv=
 for version in "${versions[@]}"; do
 	majorVersion="${version%%.*}"
 
@@ -157,7 +156,7 @@ for version in "${versions[@]}"; do
 		subVariant="${variant#$javaVariant-}"
 		[ "$subVariant" != "$variant" ] || subVariant=
 
-		baseImage='openjdk'
+		baseImage='antoineco\/openjdk'
 		case "$javaVariant" in
 			jre*|jdk*)
 				baseImage+=":${javaVariant:3}-${javaVariant:0:3}${subVariant:+-$subVariant}" # ":7-jre" or ":7-jre-alpine"
@@ -191,7 +190,7 @@ for version in "${versions[@]}"; do
 					echo -n .; sleep .2; \
 				done; echo \
 				&& catalina.sh stop \
-				&& while ! grep -q 'Stopping Coyote' logs/catalina.out; do \
+				&& while pgrep java >/dev/null; do \
 					echo -n .; sleep .2; \
 				done; echo \
 				&& nativeLines="$(grep 'Apache Tomcat Native' logs/catalina.out)" \
@@ -225,9 +224,5 @@ EOD
 			CMD ["catalina.sh", "run"]
 		EOD
 
-		travisEnv='\n  - '"VERSION=$version VARIANT=$variant$travisEnv"
 	done
 done
-
-travis="$(awk -v 'RS=\n\n' '$1 == "env:" { $0 = "env:'"$travisEnv"'" } { printf "%s%s", $0, RS }' .travis.yml)"
-echo "$travis" > .travis.yml

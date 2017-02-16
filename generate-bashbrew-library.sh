@@ -42,11 +42,8 @@ dirCommit() {
 }
 
 cat <<-EOH
-# this file is generated via https://github.com/docker-library/tomcat/blob/$(fileCommit "$self")/$self
-
-Maintainers: Tianon Gravi <admwiggin@gmail.com> (@tianon),
-             Joseph Ferguson <yosifkit@gmail.com> (@yosifkit)
-GitRepo: https://github.com/docker-library/tomcat.git
+Maintainers: Antoine Cotten <tonio.cotten@gmail.com> (@antoineco)
+GitRepo: https://github.com/antoineco/tomcat.git
 EOH
 
 # prints "$2$1$3$1...$N"
@@ -57,7 +54,7 @@ join() {
 }
 
 for version in "${versions[@]}"; do
-	for variant in jre{7,8,9}{,-alpine}; do
+	for variant in jre{7,8,9}-centos; do
 		[ -f "$version/$variant/Dockerfile" ] || continue
 
 		commit="$(dirCommit "$version/$variant")"
