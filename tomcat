@@ -1,28 +1,28 @@
 Maintainers: Antoine Cotten <tonio.cotten@gmail.com> (@antoineco)
 GitRepo: https://github.com/antoineco/tomcat.git
 
-Tags: 6.0.48-jre7-centos, 6.0-jre7-centos, 6-jre7-centos, 6.0.48-centos, 6.0-centos, 6-centos
-GitCommit: 6509d338a2f618ec11736cea42b74896b6da7893
+Tags: 6.0.51-jre7-centos, 6.0-jre7-centos, 6-jre7-centos, 6.0.51-centos, 6.0-centos, 6-centos
+GitCommit: 765077c2059695703eadf3f4e71d1eb5275a5097
 Directory: 6/jre7-centos
 
-Tags: 6.0.48-jre8-centos, 6.0-jre8-centos, 6-jre8-centos
-GitCommit: 6509d338a2f618ec11736cea42b74896b6da7893
+Tags: 6.0.51-jre8-centos, 6.0-jre8-centos, 6-jre8-centos
+GitCommit: 765077c2059695703eadf3f4e71d1eb5275a5097
 Directory: 6/jre8-centos
 
-Tags: 7.0.75-jre7-centos, 7.0-jre7-centos, 7-jre7-centos, 7.0.75-centos, 7.0-centos, 7-centos
-GitCommit: 6509d338a2f618ec11736cea42b74896b6da7893
+Tags: 7.0.76-jre7-centos, 7.0-jre7-centos, 7-jre7-centos, 7.0.76-centos, 7.0-centos, 7-centos
+GitCommit: 765077c2059695703eadf3f4e71d1eb5275a5097
 Directory: 7/jre7-centos
 
-Tags: 7.0.75-jre8-centos, 7.0-jre8-centos, 7-jre8-centos
-GitCommit: 6509d338a2f618ec11736cea42b74896b6da7893
+Tags: 7.0.76-jre8-centos, 7.0-jre8-centos, 7-jre8-centos
+GitCommit: 765077c2059695703eadf3f4e71d1eb5275a5097
 Directory: 7/jre8-centos
 
-Tags: 8.0.41-jre7-centos, 8.0-jre7-centos, 8-jre7-centos, jre7-centos, 8.0.41-centos, 8.0-centos, 8-centos, centos
-GitCommit: 6509d338a2f618ec11736cea42b74896b6da7893
+Tags: 8.0.42-jre7-centos, 8.0-jre7-centos, 8-jre7-centos, jre7-centos, 8.0.42-centos, 8.0-centos, 8-centos, centos
+GitCommit: 765077c2059695703eadf3f4e71d1eb5275a5097
 Directory: 8.0/jre7-centos
 
-Tags: 8.0.41-jre8-centos, 8.0-jre8-centos, 8-jre8-centos, jre8-centos
-GitCommit: 6509d338a2f618ec11736cea42b74896b6da7893
+Tags: 8.0.42-jre8-centos, 8.0-jre8-centos, 8-jre8-centos, jre8-centos
+GitCommit: 765077c2059695703eadf3f4e71d1eb5275a5097
 Directory: 8.0/jre8-centos
 
 Tags: 8.5.12-jre8-centos, 8.5-jre8-centos, 8.5.12-centos, 8.5-centos
