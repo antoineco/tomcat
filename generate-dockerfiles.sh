@@ -137,7 +137,7 @@ fi
 versions=( "${versions[@]%/}" )
 
 # see OPENSSL_VERSION in Dockerfile-centos.template
-opensslVersionDebian="$(docker run -i --rm centos:7 bash -c 'yum install -y https://downloads.ulyaoth.net/rpm/ulyaoth-latest.centos.noarch.rpm && yum info "$@"' -- 'ulyaoth-openssl1.0.2' |tac|tac| awk -F ': ' '$1 ~ /^Version/ { print $2; exit }')"
+opensslVersionDebian="$(docker run -i --rm centos:7 bash -c 'yum install -y https://downloads.ulyaoth.net/rpm/ulyaoth-latest.centos.x86_64.rpm && yum info "$@"' -- 'ulyaoth-openssl1.0.2' |tac|tac| awk -F ': ' '$1 ~ /^Version/ { print $2; exit }')"
 
 for version in "${versions[@]}"; do
 	majorVersion="${version%%.*}"

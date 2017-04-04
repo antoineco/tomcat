@@ -1,7 +1,7 @@
 FROM antoineco/openjdk:8-jre-centos
 
 ENV CATALINA_HOME /usr/local/tomcat
-ENV PATH $CATALINA_HOME/bin:/usr/local/ulyaoth/ssl/openssl1.0.2/bin:$PATH
+ENV PATH $CATALINA_HOME/bin:$PATH
 RUN mkdir -p "$CATALINA_HOME"
 WORKDIR $CATALINA_HOME
 
@@ -17,12 +17,15 @@ ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
 # see http://tomcat.10.x6.nabble.com/VOTE-Release-Apache-Tomcat-8-0-32-tp5046007p5046024.html (and following discussion)
 # and https://github.com/docker-library/tomcat/pull/31
 ENV OPENSSL_VERSION 1.0.2k
-RUN yum install -y https://downloads.ulyaoth.net/rpm/ulyaoth-latest.centos.noarch.rpm \
+RUN yum install -y \
+	https://downloads.ulyaoth.net/rpm/ulyaoth-latest.centos.x86_64.rpm \
 # disable Ulyaoth repo by default
 	&& yum-config-manager --disable ulyaoth \
 	&& yum install -y \
 		apr \
-	&& yum clean all
+	&& yum install -y --enablerepo ulyaoth \
+		ulyaoth-openssl1.0.2-libs-$OPENSSL_VERSION \
+	&& yum clean all --enablerepo=ulyaoth
 
 # see https://www.apache.org/dist/tomcat/tomcat-$TOMCAT_MAJOR/KEYS
 # see also "generate-dockerfiles.sh" (https://github.com/antoineco/tomcat/blob/master/generate-dockerfiles.sh)
@@ -33,7 +36,7 @@ RUN set -ex; \
 	done
 
 ENV TOMCAT_MAJOR 8
-ENV TOMCAT_VERSION 8.0.42
+ENV TOMCAT_VERSION 8.0.43
 
 # https://issues.apache.org/jira/browse/INFRA-8753?focusedCommentId=14735394#comment-14735394
 ENV TOMCAT_TGZ_URL https://www.apache.org/dyn/closer.cgi?action=download&filename=tomcat/tomcat-$TOMCAT_MAJOR/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz
@@ -52,15 +55,18 @@ RUN set -x \
 	&& nativeBuildDir="$(mktemp -d)" \
 	&& tar -xvf bin/tomcat-native.tar.gz -C "$nativeBuildDir" --strip-components=1 \
 # get OpenSSL from Ulyaoth repo
-	&& yum install -y --enablerepo ulyaoth \
-		ulyaoth-openssl1.0.2-$OPENSSL_VERSION \
+	&& buildDepsUlyaoth=" \
+		ulyaoth-openssl1.0.2-devel-$OPENSSL_VERSION \
+	" \
 	&& nativeBuildDeps=" \
 		gcc \
 		apr-devel \
 		make \
 		java-1.${JAVA_VERSION%%[-~bu]*}.0-openjdk-devel-$JAVA_CENTOS_VERSION \
 	" \
-	&& yum install -y $nativeBuildDeps && yum clean all --enablerepo ulyaoth \
+	&& yum install -y $nativeBuildDeps \
+	&& yum install -y --enablerepo ulyaoth $buildDepsUlyaoth \
+	&& yum clean all --enablerepo=ulyaoth \
 	&& ( \
 		export CATALINA_HOME="$PWD" \
 		&& cd "$nativeBuildDir/native" \
@@ -69,13 +75,13 @@ RUN set -x \
 			--prefix="$CATALINA_HOME" \
 			--with-apr="$(which apr-1-config)" \
 			--with-java-home="$(docker-java-home)" \
-			--with-ssl=/usr/local/ulyaoth/ssl/openssl1.0.2 \
+			--with-ssl=/usr/local/ulyaoth/openssl1.0.2 \
 		&& make -j$(nproc) \
 		&& make install \
 	) \
-	&& yum history -y undo last \
+	&& yum history -y rollback last-2 \
+	&& find /etc -mindepth 2 -name *.rpmsave -exec rm -v '{}' + \
 	&& rm -rf /usr/share/java \
-	&& rm -rf /usr/local/ulyaoth/ssl/openssl1.0.2/man /usr/local/ulyaoth/ssl/openssl1.0.2/include \
 	&& rm -rf "$nativeBuildDir" \
 	&& rm bin/tomcat-native.tar.gz
 
