@@ -9,20 +9,20 @@ Tags: 6.0.53-jre8-centos, 6.0-jre8-centos, 6-jre8-centos
 GitCommit: a2f72759f1102eb8d34711d38e0c3b704549ba6f
 Directory: 6/jre8-centos
 
-Tags: 7.0.77-jre7-centos, 7.0-jre7-centos, 7-jre7-centos, 7.0.77-centos, 7.0-centos, 7-centos
-GitCommit: 813bee17692bbf33577bfa346725fa69372cca12
+Tags: 7.0.78-jre7-centos, 7.0-jre7-centos, 7-jre7-centos, 7.0.78-centos, 7.0-centos, 7-centos
+GitCommit: 3ee5b5e9e663a71631465e152e8346e13201db8c
 Directory: 7/jre7-centos
 
-Tags: 7.0.77-jre8-centos, 7.0-jre8-centos, 7-jre8-centos
-GitCommit: 813bee17692bbf33577bfa346725fa69372cca12
+Tags: 7.0.78-jre8-centos, 7.0-jre8-centos, 7-jre8-centos
+GitCommit: 3ee5b5e9e663a71631465e152e8346e13201db8c
 Directory: 7/jre8-centos
 
-Tags: 8.0.43-jre7-centos, 8.0-jre7-centos, 8.0.43-centos, 8.0-centos
-GitCommit: 813bee17692bbf33577bfa346725fa69372cca12
+Tags: 8.0.44-jre7-centos, 8.0-jre7-centos, 8.0.44-centos, 8.0-centos
+GitCommit: 3ee5b5e9e663a71631465e152e8346e13201db8c
 Directory: 8.0/jre7-centos
 
-Tags: 8.0.43-jre8-centos, 8.0-jre8-centos
-GitCommit: 813bee17692bbf33577bfa346725fa69372cca12
+Tags: 8.0.44-jre8-centos, 8.0-jre8-centos
+GitCommit: 3ee5b5e9e663a71631465e152e8346e13201db8c
 Directory: 8.0/jre8-centos
 
 Tags: 8.5.15-jre8-centos, 8.5-jre8-centos, 8-jre8-centos, jre8-centos, 8.5.15-centos, 8.5-centos, 8-centos, centos
