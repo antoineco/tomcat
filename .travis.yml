@@ -26,7 +26,7 @@ install:
     )
 
 script:
-- repo="${PWD##*/}"
+- repo="${PWD##*/}" && repo="${repo%-docker}"
 - bashbrew --library . build "$repo" --namespace "$DOCKER_HUB_USERNAME"
 
 after_success:
