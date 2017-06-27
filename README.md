@@ -6,8 +6,8 @@
 * `7.0.78-jre8-centos`, `7.0-jre8-centos`, `7-jre8-centos` [(7/jre8-centos/Dockerfile)](https://github.com/antoineco/tomcat/blob/33c4efe025dc93ce98d43e8d742bbbe702880284/7/jre8-centos/Dockerfile)
 * `8.0.44-jre7-centos`, `8.0-jre7-centos`, `8.0.44-centos`, `8.0-centos` [(8.0/jre7-centos/Dockerfile)](https://github.com/antoineco/tomcat/blob/33c4efe025dc93ce98d43e8d742bbbe702880284/8.0/jre7-centos/Dockerfile)
 * `8.0.44-jre8-centos`, `8.0-jre8-centos` [(8.0/jre8-centos/Dockerfile)](https://github.com/antoineco/tomcat/blob/33c4efe025dc93ce98d43e8d742bbbe702880284/8.0/jre8-centos/Dockerfile)
-* `8.5.15-jre8-centos`, `8.5-jre8-centos`, `8-jre8-centos`, `jre8-centos`, `8.5.15-centos`, `8.5-centos`, `8-centos`, `centos` [(8.5/jre8-centos/Dockerfile)](https://github.com/antoineco/tomcat/blob/33c4efe025dc93ce98d43e8d742bbbe702880284/8.5/jre8-centos/Dockerfile)
-* `9.0.0.M21-jre8-centos`, `9.0.0-jre8-centos`, `9.0-jre8-centos`, `9-jre8-centos`, `9.0.0.M21-centos`, `9.0.0-centos`, `9.0-centos`, `9-centos` [(9.0/jre8-centos/Dockerfile)](https://github.com/antoineco/tomcat/blob/33c4efe025dc93ce98d43e8d742bbbe702880284/9.0/jre8-centos/Dockerfile)
+* `8.5.16-jre8-centos`, `8.5-jre8-centos`, `8-jre8-centos`, `jre8-centos`, `8.5.16-centos`, `8.5-centos`, `8-centos`, `centos` [(8.5/jre8-centos/Dockerfile)](https://github.com/antoineco/tomcat/blob/cd8d71fb0c444f8ae7126493c5d1c54a3985eb98/8.5/jre8-centos/Dockerfile)
+* `9.0.0.M22-jre8-centos`, `9.0.0-jre8-centos`, `9.0-jre8-centos`, `9-jre8-centos`, `9.0.0.M22-centos`, `9.0.0-centos`, `9.0-centos`, `9-centos` [(9.0/jre8-centos/Dockerfile)](https://github.com/antoineco/tomcat/blob/cd8d71fb0c444f8ae7126493c5d1c54a3985eb98/9.0/jre8-centos/Dockerfile)
 
 ![logo](https://raw.githubusercontent.com/antoineco/tomcat/master/logo.png)
 
