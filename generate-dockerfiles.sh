@@ -158,7 +158,7 @@ for version in "${versions[@]}"; do
 			fi
 EOD
 
-		printf %s "${smokeTestBlock[@]#			}" >> "$version/$variant/Dockerfile"
+		printf %s "${smokeTestBlock[@]#		}" >> "$version/$variant/Dockerfile"
 
 		cat >> "$version/$variant/Dockerfile" <<-'EOD'
 
