@@ -10,22 +10,12 @@ ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
 
 # runtime dependencies for Tomcat Native Libraries
-# Tomcat Native 1.2+ requires a newer version of OpenSSL than centos:7 has available
-# > Found   OPENSSL_VERSION_NUMBER 0x1000105f (OpenSSL 1.0.1e 11 Feb 2013)
-# > Require OPENSSL_VERSION_NUMBER 0x1000200f or greater (1.0.2)
-# > configure: error: Your version of OpenSSL is not compatible with this version of tcnative
-# see http://tomcat.10.x6.nabble.com/VOTE-Release-Apache-Tomcat-8-0-32-tp5046007p5046024.html (and following discussion)
-# and https://github.com/docker-library/tomcat/pull/31
 ENV OPENSSL_VERSION placeholder
-RUN yum install -y \
-	https://downloads.ulyaoth.net/rpm/ulyaoth-latest.centos.x86_64.rpm \
-# disable Ulyaoth repo by default
-	&& yum-config-manager --disable ulyaoth \
+RUN set -x \
 	&& yum install -y \
 		apr \
-	&& yum install -y --enablerepo ulyaoth \
-		ulyaoth-openssl1.0.2-libs-$OPENSSL_VERSION \
-	&& yum clean all --enablerepo=ulyaoth
+		openssl-$OPENSSL_VERSION \
+	&& yum clean all
 
 # see https://www.apache.org/dist/tomcat/tomcat-$TOMCAT_MAJOR/KEYS
 # see also "generate-dockerfiles.sh" (https://github.com/antoineco/tomcat/blob/master/generate-dockerfiles.sh)
@@ -54,19 +44,15 @@ RUN set -x \
 	\
 	&& nativeBuildDir="$(mktemp -d)" \
 	&& tar -xvf bin/tomcat-native.tar.gz -C "$nativeBuildDir" --strip-components=1 \
-# get OpenSSL from Ulyaoth repo
-	&& buildDepsUlyaoth=" \
-		ulyaoth-openssl1.0.2-devel-$OPENSSL_VERSION \
-	" \
 	&& nativeBuildDeps=" \
+		openssl-devel-$OPENSSL_VERSION \
 		gcc \
 		apr-devel \
 		make \
 		java-1.${JAVA_VERSION%%[-~bu]*}.0-openjdk-devel-$JAVA_CENTOS_VERSION \
 	" \
 	&& yum install -y $nativeBuildDeps \
-	&& yum install -y --enablerepo ulyaoth $buildDepsUlyaoth \
-	&& yum clean all --enablerepo=ulyaoth \
+	&& yum clean all \
 	&& ( \
 		export CATALINA_HOME="$PWD" \
 		&& cd "$nativeBuildDir/native" \
@@ -75,11 +61,11 @@ RUN set -x \
 			--prefix="$CATALINA_HOME" \
 			--with-apr="$(which apr-1-config)" \
 			--with-java-home="$(docker-java-home)" \
-			--with-ssl=/usr/local/ulyaoth/openssl1.0.2 \
-		&& make -j$(nproc) \
+			--with-ssl=yes \
+		&& make -j "$(nproc)" \
 		&& make install \
 	) \
-	&& yum history -y rollback last-2 \
+	&& yum history -y rollback last-1 \
 	&& find /etc -mindepth 2 -name *.rpmsave -exec rm -v '{}' + \
 	&& rm -rf /usr/share/java \
 	&& rm -rf "$nativeBuildDir" \
