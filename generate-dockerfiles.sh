@@ -114,7 +114,18 @@ for version in "${versions[@]}"; do
 		exit 1
 	fi
 
-	fullVersion="$(curl -fsSL --compressed "https://www.apache.org/dist/tomcat/tomcat-$majorVersion/" | grep '<a href="v'"$version." | sed -r 's!.*<a href="v([^"/]+)/?".*!\1!' | sort -V | tail -1)"
+	fullVersion="$(
+		curl -fsSL --compressed "https://www.apache.org/dist/tomcat/tomcat-$majorVersion/" \
+			| grep '<a href="v'"$version." \
+			| sed -r 's!.*<a href="v([^"/]+)/?".*!\1!' \
+			| sort -V \
+			| tail -1
+		)"
+
+	sha1="$(
+		curl -fsSL "https://www-us.apache.org/dist/tomcat/tomcat-$majorVersion/v$fullVersion/bin/apache-tomcat-$fullVersion.tar.gz.sha1" \
+			| cut -d' ' -f1
+	)"
 
 	for variant in "$version"/*/; do
 		variant="$(basename "$variant")"
@@ -141,30 +152,10 @@ for version in "${versions[@]}"; do
 				-e 's/^(FROM) .*/\1 '"$baseImage"'/' \
 				-e 's/^(ENV OPENSSL_VERSION) .*/\1 '"${opensslVersionDebian}"'/' \
 				-e 's/^(ENV TOMCAT_MAJOR) .*/\1 '"$majorVersion"'/' \
+				-e 's/^(ENV TOMCAT_SHA1) .*/\1 '"$sha1"'/' \
 				-e 's/^(ENV GPG_KEYS) .*/\1 '"${versionGpgKeys[*]}"'/' \
 				"$version/$variant/Dockerfile"
 		)
-
-		readarray smokeTestBlock <<'EOD'
-
-		# verify Tomcat Native is working properly
-		RUN set -e \
-			&& nativeLines="$(catalina.sh configtest 2>&1)" \
-			&& nativeLines="$(echo "$nativeLines" | grep 'Apache Tomcat Native')" \
-			&& nativeLines="$(echo "$nativeLines" | sort -u)" \
-			&& if ! echo "$nativeLines" | grep 'INFO: Loaded APR based Apache Tomcat Native library' >&2; then \
-				echo >&2 "$nativeLines"; \
-				exit 1; \
-			fi
-EOD
-
-		printf %s "${smokeTestBlock[@]#		}" >> "$version/$variant/Dockerfile"
-
-		cat >> "$version/$variant/Dockerfile" <<-'EOD'
-
-			EXPOSE 8080
-			CMD ["catalina.sh", "run"]
-		EOD
 
 	done
 done
